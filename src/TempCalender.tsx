@@ -1,5 +1,13 @@
 import moment from "moment";
 
+const isToday = (date: Date, temp: number) => {
+    const d = new Date();
+    return (
+        date.getFullYear() === d.getFullYear() &&
+        date.getMonth() === d.getMonth() &&
+        date.getDate() === temp
+    );
+};
 const TempCalender = ({ date }: { date: Date }) => {
     const firstDay = moment(date).startOf("month").day();
     const toDay = moment(date).endOf("month").day();
@@ -12,9 +20,9 @@ const TempCalender = ({ date }: { date: Date }) => {
     for (let i = 0; i < firstDay; i++) {
         firstRowDay = i;
         firstRow.push(
-            <th key={i + "e"} className="text-center w-20">
+            <td key={i + "e"} className="text-center w-20">
                 {""}
-            </th>
+            </td>
         );
     }
 
@@ -24,7 +32,7 @@ const TempCalender = ({ date }: { date: Date }) => {
         secRowStarts = i;
 
         firstRow.push(
-            <th
+            <td
                 key={i + "d"}
                 className={`text-center w-20 ${
                     firstRowDay % 5 === 0 || firstRowDay % 6 === 0
@@ -32,8 +40,16 @@ const TempCalender = ({ date }: { date: Date }) => {
                         : ""
                 }`}
             >
-                {i}
-            </th>
+                <span
+                    className={`${
+                        isToday(date, i)
+                            ? "border-b-2 border-indigo-900 p-4"
+                            : ""
+                    }`}
+                >
+                    {i}
+                </span>
+            </td>
         );
         ++firstRowDay;
     }
@@ -48,7 +64,7 @@ const TempCalender = ({ date }: { date: Date }) => {
 
         while (tempDay <= 6) {
             const temp = (
-                <th
+                <td
                     key={day + "d"}
                     className={`text-center w-20 ${
                         tempDay !== 0 &&
@@ -60,11 +76,17 @@ const TempCalender = ({ date }: { date: Date }) => {
                     {day > lastDate ? (
                         ""
                     ) : (
-                        <span className="border-b-2 border-indigo-900 p-4">
+                        <span
+                            className={`${
+                                isToday(date, day)
+                                    ? "border-b-4 border-indigo-900 p-4 font-semibold"
+                                    : ""
+                            }`}
+                        >
                             {day}
                         </span>
                     )}
-                </th>
+                </td>
             );
             col.push(temp);
             ++day;
@@ -76,7 +98,7 @@ const TempCalender = ({ date }: { date: Date }) => {
     }
 
     return (
-        <div className="overflow-x-auto card shadow-xl glass">
+        <div className="overflow-x-auto card glass">
             <table className="table table-zebra w-full">
                 <thead>
                     <tr>
