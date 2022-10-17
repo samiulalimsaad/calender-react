@@ -1,73 +1,54 @@
 import moment from "moment";
+import { memo } from "react";
 
 const Calender = ({ date }: { date: Date }) => {
     const firstDay = moment(date).startOf("month").day();
     const toDay = moment(date).endOf("month").day();
     const lastDate = moment(date).endOf("month").date();
 
-    const firstRow = [];
-    let firstRowDay = 0;
-    let secRowStarts = 0;
+    const othersRow: any[][] = [];
+    let col: JSX.Element[] = [];
 
-    for (let i = 0; i < firstDay; i++) {
-        firstRowDay = i;
-        firstRow.push(
-            <th key={i + "e"} className="text-center w-20">
-                {""}
-            </th>
-        );
-    }
-
-    firstRowDay += 1;
-
-    for (let i = 1; i <= 7 - firstDay; i++) {
-        secRowStarts = i;
-
-        firstRow.push(
-            <th
-                key={i + "d"}
-                className={`text-center w-20 ${
-                    firstRowDay % 5 === 0 || firstRowDay % 6 === 0
-                        ? "holyday"
-                        : ""
-                }`}
-            >
-                {i}
-            </th>
-        );
-        ++firstRowDay;
-    }
-
-    const totalRows = Math.ceil((lastDate - secRowStarts) / 7);
-    const othersRow = [];
-    let col = [];
-
-    let day = secRowStarts + 1;
-    for (let i = 0; i < totalRows; i++) {
+    let d = 1;
+    for (let row = 0; row < 6; row++) {
         let tempDay = 0;
 
         while (tempDay <= 6) {
-            const temp = (
-                <th
-                    key={day + "d"}
-                    className={`text-center w-20 ${
-                        tempDay !== 0 &&
-                        (tempDay % 6 === 0 || tempDay % 5 === 0)
-                            ? "holyday"
-                            : ""
-                    }`}
-                >
-                    {day > lastDate ? (
-                        ""
-                    ) : (
+            // console.log(
+            //     { row, tempDay, d, firstDay, lastDate },
+            //     (row === 0 && tempDay < firstDay) || d > lastDate
+            // );
+            if ((row === 0 && tempDay < firstDay) || d > lastDate) {
+                console.log("F");
+                const t = (
+                    <td
+                        key={d + tempDay + row + "day"}
+                        className={`text-center w-20`}
+                    >
+                        {/* {"F-" + d} */}
+                    </td>
+                );
+                col.push(t);
+            } else {
+                const temp = (
+                    <td
+                        key={d + "day"}
+                        className={`text-center w-20 ${
+                            tempDay !== 0 &&
+                            (tempDay % 6 === 0 || tempDay % 5 === 0)
+                                ? "holyday"
+                                : ""
+                        }`}
+                    >
                         <span className="border-b-2 border-indigo-900 p-4">
-                            {day}
+                            {d}
                         </span>
-                    )}
-                </th>
-            );
-            col.push(temp);
-            ++day;
+                    </td>
+                );
+                col.push(temp);
+                ++d;
+            }
+
             ++tempDay;
         }
         othersRow.push(col);
@@ -90,8 +71,6 @@ const Calender = ({ date }: { date: Date }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>{firstRow}</tr>
-
                     {othersRow.map((r, i) => (
                         <tr key={i + "r"}>{r}</tr>
                     ))}
@@ -101,4 +80,4 @@ const Calender = ({ date }: { date: Date }) => {
     );
 };
 
-export default Calender;
+export default memo(Calender);
