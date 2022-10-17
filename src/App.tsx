@@ -1,6 +1,6 @@
 import moment from "moment";
 import { useState } from "react";
-import Calender from "./Calender";
+import TempCalender from "./TempCalender";
 
 const d = new Date();
 
@@ -24,7 +24,6 @@ function App() {
     };
 
     const previousMonth = () => {
-        console.log(month);
         if (month === 1) {
             setYear((p) => p - 1);
             setMonth(12);
@@ -69,7 +68,7 @@ function App() {
                     </button>
                 </div>
             </div>
-            <Calender date={date} />
+            <TempCalender date={date} />
         </div>
     );
 }
