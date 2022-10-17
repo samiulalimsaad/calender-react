@@ -60,7 +60,7 @@ const Calender = ({ date }: { date: Date }) => {
                     {day > lastDate ? (
                         ""
                     ) : (
-                        <span className="ring ring-indigo-500 rounded-full p-2 h-10 w-10">
+                        <span className="border-b-2 border-indigo-900 p-4">
                             {day}
                         </span>
                     )}
